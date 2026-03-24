@@ -55,3 +55,15 @@ def export_cleaned_dataset(df, output_path):
 # [END OF THIRUVIKRAMAN S.B]
 # ==============================================================================
 
+if __name__ == "__main__":
+    current_dir = os.path.dirname(__file__)
+    project_root = os.path.abspath(os.path.join(current_dir, '..'))
+    
+    RAW_DATA_PATH = os.path.join(project_root, "data", "raw", "Master_IT_10k_Final.csv")
+    PROCESSED_DATA_PATH = os.path.join(project_root, "data", "processed", "Master_IT_Cleaned.csv")
+    
+    try:
+        raw_df = ingest_raw_data(RAW_DATA_PATH)
+        export_cleaned_dataset(raw_df, PROCESSED_DATA_PATH)
+    except Exception as e:
+        print(f"Pipeline Error: {e}")
