@@ -1,6 +1,6 @@
 """
 TEAM A: DATA PREPARATION & ANNOTATION
-Lead: Sameera Shaik | Technical Oversight: Addagada Dinesh
+Lead:  Technical Oversight: Addagada Dinesh
 """
 
 import re
@@ -22,4 +22,24 @@ def preprocess_for_classification(text: str) -> str:
 # ==============================================================================
 # [END OF ADDAGADA DINESH]
 # ==============================================================================
+
+# ==============================================================================
+#  NER PREPROCESSING
+# Implementation: Offset-preserving cleaning (keeps casing/hyphens).
+# ==============================================================================
+def preprocess_for_ner(text: str) -> str:
+    """Specialized cleaning for Named Entity Recognition."""
+    if not isinstance(text, str) or not text:
+        return ""
+
+    # Preserve casing and punctuation for entity offsets (e.g., SYSTEM_ID like SRV-22) [cite: 268, 1453]
+    # Blank 'en' tokenizer requirement: Preserve text as-is [cite: 1454, 1668]
+    text = re.sub(r"\s+", " ", text)
+    
+    return text.strip()
+# ==============================================================================
+# 
+# ==============================================================================
+
+preprocess_text = preprocess_for_classification
 
