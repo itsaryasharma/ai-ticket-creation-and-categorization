@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>IT Support Portal</title>
+  <meta name="description" content="Raise or track an IT support ticket powered by AI."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/static/css/styles.css"/>
+</head>
+<body>
+
+<!-- ── NAV ──────────────────────────────────────────────────── -->
+<nav class="navbar">
+  <div class="nav-brand">
+    <span class="nav-icon">🎫</span>
+    <strong>IT Support Portal</strong>
+  </div>
+  <div class="nav-actions">
+    <span class="nav-tagline">AI-Powered Helpdesk</span>
+    <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle theme">🌙</button>
+  </div>
+</nav>
+
+<!-- ── CENTERED FORM SHELL ───────────────────────────────────── -->
+<main class="portal-shell">
+
+  <!-- Tab Pills (centered) -->
+  <div class="portal-tabs">
+    <button class="ptab active" id="tab-raise" onclick="switchTab('raise')">📝 Raise Ticket</button>
+    <button class="ptab"        id="tab-track" onclick="switchTab('track')">🔍 Track Ticket</button>
+  </div>
+
+  <!-- ── RAISE TICKET ────────────────────────────────────────── -->
+  <section id="panel-raise" class="panel portal-panel">
+
+    <!-- Input form card -->
+    <div class="portal-card" id="raise-form-card">
+      <h1 class="portal-title">Raise a Support Ticket</h1>
+      <p class="portal-sub">Describe your issue clearly — our AI classifies and prioritises it instantly.</p>
+
+      <div class="form-group mt-1">
+        <label class="form-label" for="issue-input">Issue Description</label>
+        <textarea
+          id="issue-input"
+          class="textarea"
+          rows="5"
+          placeholder="Describe your issue (app, device, error)..."
+          maxlength="1000"
+        ></textarea>
+        <div class="char-counter"><span id="char-count">0</span> / 1000</div>
+      </div>
+
+      <button class="btn btn-primary btn-portal" id="raise-btn" onclick="raiseTicket()">
+        <span class="btn-text">Submit Ticket</span>
+        <span class="spinner hidden" id="raise-spinner"></span>
+      </button>
+    </div>
+
+    <!-- Success card (shown after submit) -->
+    <div class="portal-card success-card hidden" id="success-card">
+      <div class="success-icon">✅</div>
+      <h2 class="success-title">Ticket Created Successfully</h2>
+      <p class="success-msg">Your request has been submitted and assigned a unique tracking ID.</p>
+
+      <div class="ticket-id-display">
+        <span class="tid-label">Your Ticket ID</span>
+        <div class="tid-row">
+          <span class="tid-value" id="res-ticket-id">—</span>
+          <button class="copy-btn" id="copy-btn" onclick="copyTicketId()">📋 Copy</button>
+        </div>
+        <p class="tid-hint">Save this ID to check your ticket status at any time.</p>
+      </div>
+
+      <div class="success-actions">
+        <button class="btn btn-primary" onclick="trackThisTicket()">Track This Ticket</button>
+        <button class="btn btn-ghost"   onclick="resetForm()">Raise Another</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── TRACK TICKET ───────────────────────────────────────── -->
+  <section id="panel-track" class="panel portal-panel hidden">
+    <div class="portal-card">
+      <h1 class="portal-title">Track Your Ticket</h1>
+      <p class="portal-sub">Enter your Ticket ID to view the current status of your request.</p>
+
+      <div class="form-group mt-1">
+        <label class="form-label" for="track-input">Ticket ID</label>
+        <div class="input-row">
+          <input
+            id="track-input"
+            class="text-input"
+            type="text"
+            placeholder="e.g. TIC-B031D1B1"
+            maxlength="20"
+            onkeydown="if(event.key==='Enter') trackTicket()"
+          />
+          <button class="btn btn-primary" id="track-btn" onclick="trackTicket()">
+            <span class="btn-text">Search</span>
+            <span class="spinner hidden" id="track-spinner"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Track result -->
+    <div class="portal-card track-result hidden" id="track-result">
+      <div class="tr-header">
+        <span class="tr-id" id="trk-ticket-id">—</span>
+        <span class="status-badge" id="trk-status">—</span>
+      </div>
+      <div class="tr-grid">
+        <div class="tr-field"><span class="field-label">Title</span>    <span class="field-value" id="trk-title">—</span></div>
+        <div class="tr-field"><span class="field-label">Category</span> <span class="field-value" id="trk-category">—</span></div>
+        <div class="tr-field"><span class="field-label">Priority</span> <span class="priority-badge" id="trk-priority">—</span></div>
+        <div class="tr-field"><span class="field-label">Updated</span>  <span class="field-value" id="trk-timestamp">—</span></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Footer: subtle staff link -->
+<footer class="site-footer">
+  <span>© 2026 AI Ticket System · Hybrid-IT-Support-v3.0</span>
+  <a href="/admin/login" class="footer-admin-link">Staff Login</a>
+</footer>
+
+<div class="toast hidden" id="toast"></div>
+<script src="/static/js/theme.js"></script>
+<script src="/static/js/main.js"></script>
+</body>
+</html>

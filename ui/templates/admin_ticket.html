@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ticket Detail — Admin Panel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/static/css/styles.css"/>
+</head>
+<body class="admin-body">
+
+<!-- ── ADMIN NAVBAR ──────────────────────────────────────────── -->
+<nav class="navbar admin-nav">
+  <div class="nav-brand">
+    <span class="nav-icon">🛡️</span>
+    <strong>Ticket Detail</strong>
+  </div>
+  <div class="nav-actions">
+    <a href="/admin" class="nav-link">← Dashboard</a>
+    <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle theme">🌙</button>
+    <button class="btn btn-outline btn-sm" onclick="adminLogout()">Logout</button>
+  </div>
+</nav>
+
+<!-- ── CONTENT ─────────────────────────────────────────────────── -->
+<div class="detail-shell">
+
+  <!-- Loading -->
+  <div class="detail-loading" id="detail-loading">
+    <span class="spinner spinner-blue large-spinner"></span>
+    <p>Loading ticket…</p>
+  </div>
+
+  <!-- Error -->
+  <div class="error-banner hidden" id="detail-error">
+    ⚠️ <span id="detail-error-msg">Ticket not found.</span>
+  </div>
+
+  <!-- Content -->
+  <div class="hidden" id="detail-content">
+
+    <!-- Ticket ID bar -->
+    <div class="detail-topbar">
+      <div>
+        <p class="topbar-label">Ticket ID</p>
+        <h1 class="topbar-id" id="d-ticket-id">—</h1>
+      </div>
+      <span class="status-badge status-lg" id="d-status-badge">—</span>
+    </div>
+
+    <div class="detail-columns">
+
+      <!-- LEFT: view info -->
+      <div class="detail-col detail-col--info">
+
+        <!-- Classification card -->
+        <div class="card">
+          <h2 class="card-section-title">📋 Ticket Information</h2>
+          <div class="info-grid">
+            <div class="info-row">
+              <span class="info-label">Title</span>
+              <span class="info-value" id="d-title">—</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Category</span>
+              <span class="info-value" id="d-category">—</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Priority</span>
+              <span class="priority-badge" id="d-priority">—</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Status</span>
+              <span class="info-value" id="d-status-text">—</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Date</span>
+              <span class="info-value" id="d-date">—</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Time</span>
+              <span class="info-value" id="d-time">—</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">AI Confidence</span>
+              <div class="conf-row">
+                <div class="conf-track"><div class="conf-fill" id="d-conf-bar"></div></div>
+                <span class="info-value" id="d-confidence">—</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Description card -->
+        <div class="card">
+          <h2 class="card-section-title">💬 User Description</h2>
+          <p class="desc-box" id="d-description">—</p>
+        </div>
+
+        <!-- Entities: text-only chips -->
+        <div class="card">
+          <h2 class="card-section-title">🔑 Key Identifiers</h2>
+          <p class="entities-empty hidden" id="no-entities">No entities identified.</p>
+          <div class="entity-chips-wrap" id="entity-chips"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT: edit panel -->
+      <div class="detail-col detail-col--edit">
+        <div class="card edit-card">
+          <h2 class="card-section-title">⚙️ Edit Ticket</h2>
+          <p class="edit-hint">Update any field below and click <strong>Save Changes</strong>.</p>
+
+          <!-- Title -->
+          <div class="form-group">
+            <label class="form-label" for="edit-title">Title</label>
+            <input class="text-input" type="text" id="edit-title" placeholder="Ticket title"/>
+          </div>
+
+          <!-- Category -->
+          <div class="form-group">
+            <label class="form-label" for="edit-category">Category</label>
+            <select class="select-input" id="edit-category">
+              <option value="">— Select category —</option>
+              <option value="Software Issue">Software Issue</option>
+              <option value="Hardware Issue">Hardware Issue</option>
+              <option value="Network Issue">Network Issue</option>
+              <option value="Access / Authentication Issue">Access / Authentication Issue</option>
+              <option value="Email & Communication Issue">Email &amp; Communication Issue</option>
+              <option value="General Support">General Support</option>
+            </select>
+          </div>
+
+          <!-- Priority -->
+          <div class="form-group">
+            <label class="form-label" for="edit-priority">Priority</label>
+            <select class="select-input" id="edit-priority">
+              <option value="">— Select priority —</option>
+              <option value="P1 - Critical">P1 - Critical</option>
+              <option value="P2 - Medium">P2 - Medium</option>
+              <option value="P3 - Low">P3 - Low</option>
+            </select>
+          </div>
+
+          <!-- Status -->
+          <div class="form-group">
+            <label class="form-label" for="edit-status">Status</label>
+            <select class="select-input" id="edit-status">
+              <option value="">— Select status —</option>
+              <option value="OPEN (AUTO_ASSIGN)">OPEN (AUTO_ASSIGN)</option>
+              <option value="OPEN (MANUAL_REVIEW)">OPEN (MANUAL_REVIEW)</option>
+              <option value="IN_PROGRESS">IN_PROGRESS</option>
+              <option value="CLOSED">CLOSED</option>
+              <option value="RESOLVED">RESOLVED</option>
+              <option value="TRANSFERRED">TRANSFERRED</option>
+            </select>
+          </div>
+
+          <button class="btn btn-primary btn-full" id="save-btn" onclick="saveChanges()">
+            <span class="btn-text">Save Changes</span>
+            <span class="spinner hidden" id="save-spinner"></span>
+          </button>
+
+          <div class="divider"></div>
+
+          <button class="btn btn-success btn-full" onclick="markResolved()">
+            ✓ Mark as Resolved
+          </button>
+        </div>
+      </div>
+
+    </div><!-- /detail-columns -->
+  </div><!-- /detail-content -->
+</div><!-- /detail-shell -->
+
+<div class="toast hidden" id="toast"></div>
+<script>const TICKET_ID = "{{ ticket_id }}";</script>
+<script src="/static/js/theme.js"></script>
+<script src="/static/js/admin.js"></script>
+</body>
+</html>

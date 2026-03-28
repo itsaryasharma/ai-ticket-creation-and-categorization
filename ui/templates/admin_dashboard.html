@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard — IT Support Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/static/css/styles.css"/>
+</head>
+<body class="admin-body">
+
+<!-- ── ADMIN NAVBAR ──────────────────────────────────────────── -->
+<nav class="navbar admin-nav">
+  <div class="nav-brand">
+    <span class="nav-icon">🛡️</span>
+    <strong>Admin Dashboard</strong>
+  </div>
+  <div class="nav-actions">
+    <a href="/portal" class="nav-link">User Portal</a>
+    <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle theme">🌙</button>
+    <button class="btn btn-outline btn-sm" onclick="adminLogout()">Logout</button>
+  </div>
+</nav>
+
+<!-- ── LAYOUT ─────────────────────────────────────────────────── -->
+<div class="admin-shell">
+
+  <!-- SIDEBAR -->
+  <aside class="admin-sidebar">
+    <div class="asb-section">
+      <p class="asb-label">Views</p>
+      <button class="asb-item active" id="filter-all"         onclick="applyFilter(this,'')">All Tickets</button>
+      <button class="asb-item"        id="filter-open"        onclick="applyFilter(this,'OPEN')">Open</button>
+      <button class="asb-item"        id="filter-inprogress"  onclick="applyFilter(this,'IN_PROGRESS')">In Progress</button>
+      <button class="asb-item"        id="filter-closed"      onclick="applyFilter(this,'CLOSED')">Closed</button>
+      <button class="asb-item"        id="filter-resolved"    onclick="applyFilter(this,'RESOLVED')">Resolved</button>
+      <button class="asb-item"        id="filter-transferred" onclick="applyFilter(this,'TRANSFERRED')">Transferred</button>
+      <button class="asb-item"        id="filter-manual"      onclick="applyFilter(this,'MANUAL_REVIEW')">Manual Review</button>
+    </div>
+  </aside>
+
+  <!-- MAIN TABLE AREA -->
+  <main class="admin-main">
+    <div class="admin-toolbar">
+      <div class="toolbar-left">
+        <h2 class="section-heading">Tickets</h2>
+        <span class="ticket-count badge-count" id="ticket-count">—</span>
+      </div>
+      <div class="toolbar-right">
+        <div class="search-wrap">
+          <span class="search-icon">🔍</span>
+          <input
+            class="search-input"
+            type="text"
+            id="search-input"
+            placeholder="Search by Ticket ID…"
+            oninput="onSearch()"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrap">
+      <div class="table-loading" id="table-loading">
+        <span class="spinner spinner-blue"></span>
+        <span>Loading tickets…</span>
+      </div>
+      <div class="empty-state hidden" id="empty-state">
+        <span class="empty-icon">📭</span>
+        <p>No tickets match this filter.</p>
+      </div>
+      <table class="data-table" id="tickets-table">
+        <thead>
+          <tr>
+            <th>Ticket ID</th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="tickets-tbody"></tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<div class="toast hidden" id="toast"></div>
+<script src="/static/js/theme.js"></script>
+<script src="/static/js/admin.js"></script>
+</body>
+</html>
