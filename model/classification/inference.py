@@ -15,6 +15,11 @@ Technical Strategy:
 3. Dependency Injection: Ensures preprocessing functions are in the namespace 
    so the pickled model (.pkl) can 'unfreeze' correctly.
 """
+from data_pipeline.preprocessing import preprocess_text
+import sys
+
+# Fix for pickle dependency
+sys.modules['__main__'].preprocess_text = preprocess_text
 
 import joblib  # Standard library for loading serialized (pickled) ML models
 import sys
