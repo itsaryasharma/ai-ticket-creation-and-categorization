@@ -16,9 +16,15 @@ for p in [str(_BACKEND_DIR), str(_PROJECT_ROOT)]:
     if p not in sys.path:
         sys.path.insert(0, p)
 
-# ── INIT DB ───────────────────────────────────────────────────────────
+# ── INIT DB + SEED DEFAULT ACCOUNTS ──────────────────────────────────
 from database import init_db
 init_db()
+
+# Seed creates admin + user accounts from env vars if they don't exist.
+# Runs on every startup — safe to re-run (skips existing accounts).
+from seed_db import seed as _seed_accounts
+_seed_accounts()
+
 
 # ── FASTAPI APP ───────────────────────────────────────────────────────
 from fastapi import FastAPI
