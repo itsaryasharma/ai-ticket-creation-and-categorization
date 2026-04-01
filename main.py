@@ -15,6 +15,7 @@ Main Features:
 import json
 import sys
 import uuid
+import re
 from datetime import datetime
 from pathlib import Path
 
@@ -82,40 +83,55 @@ def get_subject(entities):
     return "General Issue"
 
 def determine_priority(text, category, entities):
-    """Calculates ticket urgency using a Hybrid Priority Matrix.
-    
-    The logic weighs hard technical evidence (Errors) and specific sentiment 
-    keywords against the AI-predicted category.
-    
-    Args:
-        text (str): The raw user input.
-        category (str): The SVM-predicted ticket category.
-        entities (list): The list of extracted entities.
-        
-    Returns:
-        str: A priority level string (P1, P2, or P3).
     """
-    text_lower = text.lower()
-    # Keywords indicating high urgency or work-blocker status
+    Calculates ticket urgency using a Positional Negation-Aware Hybrid Priority Matrix.
+    
+    Improvements:
+    - Handles multiple occurrences of the same keyword.
+    - Uses RegEx to strip punctuation (so 'critical.' is recognized as 'critical').
+    - Evaluates the specific context for every high-priority trigger found.
+    """
+    
+    # 1. PRE-PROCESSING: Clean punctuation and split into words
+    # This ensures 'critical!' or 'urgent,' matches our keyword list
+    clean_text = re.sub(r'[^\w\s]', '', text.lower())
+    words = clean_text.split()
+    
+    # Configuration
     p1_keywords = ["urgent", "blocked", "asap", "down", "crash", "critical"]
+    negations = ["not", "no", "never", "isnt", "wasnt", "arent", "neither"]
 
-    # Rule 1: Technical Errors trigger immediate escalation
+    # Rule 1: Technical Errors (Hard evidence from NER extraction)
+    # If our spaCy model found an 'ERROR' label, it's an automatic P1
     if any(e["label"] == "ERROR" for e in entities): 
         return "P1 - Critical"
     
-    # Rule 2: Explicit urgency keywords in user sentiment
-    if any(word in text_lower for word in p1_keywords): 
-        return "P1 - Critical"
-    
-    # Rule 3: Broad impact categories (e.g., Network outages)
+    # Rule 2: Broad impact categories (SVM prediction)
+    # Network issues usually affect multiple users, so they are prioritized
     if "Network" in category: 
         return "P1 - Critical"
     
-    # Rule 4: Presence of physical assets indicates standard hardware support
+    # Rule 3: Positional Keyword Check with Negation Handling
+    # We loop through every word in the sentence by its index (i)
+    for i, word in enumerate(words):
+        if word in p1_keywords:
+            # Look at the 2 words immediately before THIS specific keyword
+            # Example: "system [is] [not] critical" -> idx 3, checks words at 1 and 2
+            prev_context = words[max(0, i-2):i]
+            
+            # If no negation is found in front of this specific keyword, trigger P1
+            if not any(neg in prev_context for neg in negations):
+                return "P1 - Critical"
+            
+            # If negated, we don't return. We keep looking for other 
+            # non-negated keywords in the rest of the sentence.
+    
+    # Rule 4: Presence of physical assets (NER)
+    # Hardware issues that aren't critical/errors default to Medium
     if any(e["label"] == "DEVICE" for e in entities): 
         return "P2 - Medium"
     
-    # Default Rule: Standard service requests
+    # Default Rule: Standard requests with no high-signal triggers
     return "P3 - Low"
 
 # ---------------------------------------------------------------------------
@@ -179,7 +195,7 @@ if __name__ == "__main__":
     print("="*60)
     
     # Example production-case input
-    query = "Karan is trying to open Slack on his MacBook but gets a 500 error. It is urgent!"
+    query = "The login is not critical, but the server being down is critical."
     
     try:
         # Process the input and generate the ticket
