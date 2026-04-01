@@ -12,7 +12,7 @@
 [![API Docs](https://img.shields.io/badge/📖_API_Docs-Swagger_UI-brightgreen?style=for-the-badge&logo=fastapi)](https://your-backend.onrender.com/api/docs)
 [![Health Check](https://img.shields.io/badge/❤️_Health-Render-46E3B7?style=for-the-badge&logo=render)](https://your-backend.onrender.com/api/health)
 
-> **Replace** `your-app.vercel.app` and `your-backend.onrender.com` with your actual deployed URLs.
+
 
 </div>
 
