@@ -8,9 +8,9 @@
 
 *Transforming unstructured IT complaints into structured, prioritized support tickets — automatically.*
 
-[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Vercel-black?style=for-the-badge&logo=vercel)](https://your-app.vercel.app)
-[![API Docs](https://img.shields.io/badge/📖_API_Docs-Swagger_UI-brightgreen?style=for-the-badge&logo=fastapi)](https://your-backend.onrender.com/api/docs)
-[![Health Check](https://img.shields.io/badge/❤️_Health-Render-46E3B7?style=for-the-badge&logo=render)](https://your-backend.onrender.com/api/health)
+[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Vercel-black?style=for-the-badge&logo=vercel)](https://ai-ticket-creation-and-categorizati.vercel.app)
+[![API Docs](https://img.shields.io/badge/📖_API_Docs-Swagger_UI-brightgreen?style=for-the-badge&logo=fastapi)](https://ai-ticket-backend-65w9.onrender.com/api/docs)
+[![Health Check](https://img.shields.io/badge/❤️_Health-Render-46E3B7?style=for-the-badge&logo=render)](https://ai-ticket-backend-65w9.onrender.com/api/health)
 
 
 
