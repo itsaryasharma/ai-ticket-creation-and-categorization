@@ -22,10 +22,9 @@
 
 | Resource | URL |
 |----------|-----|
-| 🌐 **Live Application** | `https://your-app.vercel.app` |
-| 📖 **API Documentation** | `https://your-backend.onrender.com/api/docs` |
-| ❤️ **Health Endpoint** | `https://your-backend.onrender.com/api/health` |
-| 🔁 **ReDoc** | `https://your-backend.onrender.com/api/redoc` |
+| 🌐 **Live Application** | `https://ai-ticket-creation-and-categorizati.vercel.app` |
+| 📖 **API Documentation** | `https://ai-ticket-backend-65w9.onrender.com/api/docs` |
+| ❤️ **Health Endpoint** | `https://ai-ticket-backend-65w9.onrender.com/api/health` |
 
 ---
 
@@ -601,19 +600,6 @@ All endpoints require `Authorization: Bearer <token>` except `/api/auth/*`.
 | **Cold Starts** | Render free tier spins down after 15 min idle. First request takes 30–50s (spaCy + SVM model load). |
 | **ML Inference Speed** | spaCy model (~40 MB) + SVM pickle (~3.5 MB) load once at startup. Per-request inference is fast (~50–200ms). |
 | **`ticket_messages` Table** | Schema exists but no API routes are implemented in this version. |
-
----
-
-## 👥 Team
-
-Built under the **Infosys Springboard 6.0 AI Internship Program**.
-
-| Area | Contribution |
-|------|-------------|
-| AI Orchestration & ML Lead | Arya Kumar |
-| SVM Classification | Bhavya Sree Pasumarthi |
-| Data Pipeline & NER Preprocessing | Addagada Dinesh |
-| Full-Stack UI & API Integration | Team |
 
 ---
 
